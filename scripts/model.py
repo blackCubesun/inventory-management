@@ -63,6 +63,11 @@ df_god_skn.columns = ['SKN', 'СТО', 'Расход12мес_SKN']
 df = df_keys.merge(df_god_agg, on=['Код', 'СТО'], how='left')
 df['Расход12мес'] = df['Расход12мес'].fillna(0)
 
+# Убираем мусор
+df = df[df['Код'].notna()]
+df = df[df['Код'] != 'Итого']
+df = df[~df['Код'].str.contains('Итого', na=False)]
+
 # СДР
 df['СДР'] = df['Расход12мес'] / 365
 
@@ -80,7 +85,7 @@ df_ost_skn = df_ostatki.groupby(['SKN', 'СТО'])['Остаток'].sum().reset
 df_ost_skn.columns = ['SKN', 'СТО', 'ОстатокСТО_SKN']
 
 df = df.merge(df_ost_skn, on=['SKN', 'СТО'], how='left')
-df['ОстатокСТО_SKN'] = df['ОстатокСТО_SKN'].fillna(0)
+df['ОстатокСТО_SKN'] = df['ОстатокСТО_SKN'].fillna(df['ОстатокСТО'])
 
 # ВПути
 df_vp_agg = df_vputi.groupby(['Код', 'СТО'])['ВПути'].sum().reset_index()
