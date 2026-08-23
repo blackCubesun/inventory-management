@@ -1,0 +1,127 @@
+import pandas as pd
+import os
+
+RAW = r'C:\Users\92585\Desktop\Sklad_System\data\raw'
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+# ========== ОСТАТКИ ==========
+def normalize_ostatki():
+    df = pd.read_excel(os.path.join(RAW, 'Остатки.xlsx'), skiprows=8, header=0)
+    df = df.rename(columns={
+        'Номенклатура.Код': 'Код',
+        'Номенклатура.!SKN (Код)': 'SKN',
+        'Номенклатура.№ по кат.': 'Артикул',
+        'Номенклатура.Наименование': 'Наименование'
+    })
+    df = df[df['Код'].notna()]
+    df = df[df['Код'] != 'Итого']
+    df = df.drop(columns=['Итого'], errors='ignore')
+    key_cols = ['Код', 'SKN', 'Артикул', 'Наименование']
+    sto_cols = [c for c in df.columns if c not in key_cols]
+    df_flat = df.melt(id_vars=key_cols, value_vars=sto_cols, var_name='СТО', value_name='Остаток')
+    df_flat = df_flat[df_flat['Остаток'].notna()]
+    df_flat.to_excel(os.path.join(PROCESSED, 'Остатки_плоский.xlsx'), index=False)
+    print(f'✓ Остатки: {df_flat.shape}')
+
+# ========== ВПУТИ ==========
+def normalize_vputi():
+    df = pd.read_excel(os.path.join(RAW, 'ВПути.xlsx'), skiprows=8, header=0)
+    df = df.rename(columns={
+        'Номенклатура.Код': 'Код',
+        'Номенклатура.!SKN (Код)': 'SKN',
+        'Номенклатура.№ по кат.': 'Артикул',
+        'Номенклатура.Наименование': 'Наименование'
+    })
+    df = df[df['Код'].notna()]
+    df = df[df['Код'] != 'Итого']
+    df = df.drop(columns=['Итого'], errors='ignore')
+    key_cols = ['Код', 'SKN', 'Артикул', 'Наименование']
+    sto_cols = [c for c in df.columns if c not in key_cols]
+    df_flat = df.melt(id_vars=key_cols, value_vars=sto_cols, var_name='СТО', value_name='ВПути')
+    df_flat = df_flat[df_flat['ВПути'].notna()]
+    df_flat.to_excel(os.path.join(PROCESSED, 'ВПути_плоский.xlsx'), index=False)
+    print(f'✓ ВПути: {df_flat.shape}')
+
+# ========== РЕЗЕРВЫ ==========
+def normalize_rezerv():
+    df = pd.read_excel(os.path.join(RAW, 'Резервы.xlsx'), skiprows=7, header=0)
+    df = df.rename(columns={'!SKN (Код)': 'SKN', '№ по кат.': 'Артикул'})
+    df = df[df['Код'].notna()]
+    df = df[df['Код'] != 'Итого']
+    df = df.drop(columns=['Итого'], errors='ignore')
+    key_cols = ['Код', 'SKN', 'Артикул', 'Наименование']
+    sto_cols = [c for c in df.columns if c not in key_cols]
+    df_flat = df.melt(id_vars=key_cols, value_vars=sto_cols, var_name='СТО', value_name='Резерв')
+    df_flat = df_flat[df_flat['Резерв'].notna()]
+    df_flat.to_excel(os.path.join(PROCESSED, 'Резервы_плоский.xlsx'), index=False)
+    print(f'✓ Резервы: {df_flat.shape}')
+
+# ========== ОБОРОТКА МЕСЯЦ ==========
+def normalize_mes():
+    df = pd.read_excel(os.path.join(RAW, 'Оборотка_месяц.xlsx'), skiprows=8, header=0)
+    df = df.rename(columns={
+        'Номенклатура.Код': 'Код',
+        'Номенклатура.!SKN (Код)': 'SKN',
+        'Номенклатура.№ по кат.': 'Артикул',
+        'Номенклатура.Наименование': 'Наименование'
+    })
+    df = df[df['Код'].notna()]
+    df = df[df['Код'] != 'Итого']
+    df = df.drop(columns=['Итого'], errors='ignore')
+    key_cols = ['Код', 'SKN', 'Артикул', 'Наименование']
+    sto_cols = [c for c in df.columns if c not in key_cols]
+    df_flat = df.melt(id_vars=key_cols, value_vars=sto_cols, var_name='СТО', value_name='РасходМес')
+    df_flat = df_flat[df_flat['РасходМес'].notna()]
+    df_flat.to_excel(os.path.join(PROCESSED, 'Оборотка_месяц_плоский.xlsx'), index=False)
+    print(f'✓ Оборотка_месяц: {df_flat.shape}')
+
+# ========== ОБОРОТКА ГОД ==========
+def normalize_god():
+    df = pd.read_excel(os.path.join(RAW, 'Оборотка_год.xlsx'), skiprows=8, header=0)
+    df = df.rename(columns={
+        'Номенклатура.Код': 'Код',
+        'Номенклатура.!SKN (Код)': 'SKN',
+        'Номенклатура.№ по кат.': 'Артикул',
+        'Номенклатура.Наименование': 'Наименование'
+    })
+    df = df[df['Код'].notna()]
+    key_cols = ['Код', 'SKN', 'Артикул', 'Наименование']
+    all_cols = [c for c in df.columns if c not in key_cols]
+    sto_cols = [c for c in all_cols if '.' not in str(c)]
+    months = ['Сентябрь 2025 г.', 'Октябрь 2025 г.', 'Ноябрь 2025 г.', 'Декабрь 2025 г.',
+              'Январь 2026 г.', 'Февраль 2026 г.', 'Март 2026 г.', 'Апрель 2026 г.',
+              'Май 2026 г.', 'Июнь 2026 г.', 'Июль 2026 г.', 'Август 2026 г.']
+    rows = []
+    for sto in sto_cols:
+        sto_idx = all_cols.index(sto)
+        month_cols = all_cols[sto_idx+1:sto_idx+13]
+        for i, month in enumerate(months):
+            if i < len(month_cols):
+                col = month_cols[i]
+                tmp = df[['Код', 'SKN', 'Артикул', 'Наименование', col]].copy()
+                tmp.columns = ['Код', 'SKN', 'Артикул', 'Наименование', 'Расход']
+                tmp['СТО'] = sto
+                tmp['Месяц'] = month
+                rows.append(tmp)
+    df_flat = pd.concat(rows, ignore_index=True)
+    df_flat = df_flat[df_flat['Расход'].notna()]
+    df_flat.to_excel(os.path.join(PROCESSED, 'Оборотка_год_плоский.xlsx'), index=False)
+    print(f'✓ Оборотка_год: {df_flat.shape}')
+
+# ========== ЦЕНА ==========
+def normalize_cena():
+    df = pd.read_excel(os.path.join(RAW, 'Цена.xlsx'), skiprows=2, header=0)
+    df.columns = ['Код', 'SKN', 'Артикул', 'Наименование', 'Цена']
+    df = df[df['Код'].notna()]
+    df.to_excel(os.path.join(PROCESSED, 'Цена_плоский.xlsx'), index=False)
+    print(f'✓ Цена: {df.shape}')
+
+# ========== ЗАПУСК ==========
+if __name__ == '__main__':
+    normalize_ostatki()
+    normalize_vputi()
+    normalize_rezerv()
+    normalize_mes()
+    normalize_god()
+    normalize_cena()
+    print('\n✅ Все файлы нормализованы!')

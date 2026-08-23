@@ -1,0 +1,10 @@
+# Данные
+data/raw/*.xlsx
+data/processed/*.xlsx
+
+# Python
+__pycache__/
+*.pyc
+
+# Прочее
+.DS_Store
