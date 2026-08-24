@@ -85,6 +85,7 @@ def normalize_god():
         'Номенклатура.Наименование': 'Наименование'
     })
     df = df[df['Код'].notna()]
+    df = df[~df['Код'].astype(str).str.contains('Итого', na=False)]
     key_cols = ['Код', 'SKN', 'Артикул', 'Наименование']
     all_cols = [c for c in df.columns if c not in key_cols]
     sto_cols = [c for c in all_cols if '.' not in str(c)]
