@@ -8,3 +8,7 @@ __pycache__/
 
 # Прочее
 .DS_Store
+
+data/sklad.db
+*.xlsx
+Модель.xlsx

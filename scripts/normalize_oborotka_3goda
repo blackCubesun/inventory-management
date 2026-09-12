@@ -1,0 +1,9 @@
+import pandas as pd
+import os
+
+RAW = r'C:\Users\92585\Desktop\Sklad_System\data\raw'
+
+df = pd.read_excel(os.path.join(RAW, 'Оборотка_3года.xlsx'), skiprows=8, header=0)
+print('Размер:', df.shape)
+print('Первые колонки:', list(df.columns[:10]))
+print('Последние колонки:', list(df.columns[-5:]))

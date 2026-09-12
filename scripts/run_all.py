@@ -17,16 +17,40 @@ def run(script):
 if __name__ == '__main__':
     print('🚀 СТАРТ ПОЛНОГО ЦИКЛА ОБРАБОТКИ')
     
-    # 1. Нормализация
+    # 1. Нормализация исходных отчётов
     run('normalize_all.py')
     
-    # 2. Модель
+    # 2. Модель (старая)
     run('model.py')
     
-    # 3. Загрузка в базу
-    run('db_load.py')
+    # 3. Погода
+    run('normalize_pogoda.py')
     
-    # 4. Сохранение модели в базу
+    # 4. Пробег
+    run('probeg_traektorii.py')
+    run('probeg_monthly.py')
+    
+    # 5. Потребление
+    run('potreblenie.py')
+    
+    # 6. ML-датасет
+    run('ml_dataset_v2.py')
+    run('ml_features_v2.py')
+    
+    # 7. Croston
+    run('croston_manual.py')
+    
+    # 8. Худший сценарий
+    run('worst_case.py')
+    
+    # 9. Точки заказа
+    run('reorder_point.py')
+    
+    # 10. Модель v2
+    run('fill_model_v2.py')
+    
+    # 11. База данных
+    run('db_load.py')
     run('db_save_model.py')
     
     print('\n🎉 ПОЛНЫЙ ЦИКЛ ЗАВЕРШЁН')
