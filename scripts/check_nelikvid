@@ -1,0 +1,24 @@
+import pandas as pd
+import os
+
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+df = pd.read_excel(os.path.join(PROCESSED, '_Расчёт_v2_final.xlsx'))
+
+# Топ-20 неликвида по остатку
+nelikvid = df[df['Зона'] == 'Неликвид'].sort_values('ОстатокСТО', ascending=False)
+print('Топ-20 неликвида:')
+print(nelikvid[['СТО', 'Код', 'Наименование', 'ОстатокСТО']].head(20))
+
+# Топ-20 избытка
+izl = df[df['Зона'] == 'Избыток'].sort_values('ИзлишекСверхЦели', ascending=False)
+print('\nТоп-20 избытка:')
+print(izl[['СТО', 'Код', 'Наименование', 'ИзлишекСверхЦели']].head(20))
+
+df = pd.read_excel(os.path.join(PROCESSED, '_Расчёт_v2_final.xlsx'))
+nelikvid = df[df['Зона'] == 'Неликвид'].copy()
+nelikvid['СтоимостьОстатка'] = nelikvid['ОстатокСТО'] * nelikvid['Цена']
+nelikvid = nelikvid.sort_values('СтоимостьОстатка', ascending=False)
+
+print('Топ-20 неликвида по стоимости:')
+print(nelikvid[['СТО', 'Код', 'Наименование', 'ОстатокСТО', 'Цена', 'СтоимостьОстатка']].head(20))

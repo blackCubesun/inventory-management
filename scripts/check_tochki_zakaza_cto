@@ -1,0 +1,12 @@
+import pandas as pd
+import os
+
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+df_base = pd.read_excel(os.path.join(PROCESSED, '_Расчёт_v2_base.xlsx'))
+print('ТипСТО в базе:')
+print(df_base['ТипСТО'].value_counts())
+
+df_tochki = pd.read_excel(os.path.join(PROCESSED, 'ТочкиЗаказа.xlsx'))
+print('\nТипСТО в точках:')
+print(df_tochki['ТипСТО'].value_counts())

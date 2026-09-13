@@ -6,7 +6,7 @@ PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
 
 # Загружаем прогнозы
 df_worst = pd.read_excel(os.path.join(PROCESSED, 'Прогноз_ХудшийСценарий.xlsx'))
-df_worst['Код'] = "'" + df_worst['Код'].astype(str).str.zfill(8)
+df_worst['Код'] = df_worst['Код'].astype(str).str.zfill(8)
 
 # Параметры
 LEAD_TIME_CS = 14  # дней (ЦС → СТО)
