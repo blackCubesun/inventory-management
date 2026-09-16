@@ -1,0 +1,7 @@
+import pandas as pd
+import os
+
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+df = pd.read_excel(os.path.join(PROCESSED, 'Модель_v2.xlsx'), sheet_name='Расчёт')
+print(df['Зона'].value_counts())

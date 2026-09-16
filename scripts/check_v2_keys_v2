@@ -1,0 +1,17 @@
+import pandas as pd
+import os
+
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+df = pd.read_excel(os.path.join(PROCESSED, '_Ключи_v2_испр.xlsx'))
+
+# Пустые Коды
+print('Код пустой:', df['Код'].isna().sum())
+print('СТО пустой:', df['СТО'].isna().sum())
+print('Артикул пустой:', df['Артикул'].isna().sum())
+print('Наименование пустое:', df['Наименование'].isna().sum())
+
+# Строки с пустым Кодом
+if df['Код'].isna().sum() > 0:
+    print('\nСтроки с пустым Кодом:')
+    print(df[df['Код'].isna()].head(20))

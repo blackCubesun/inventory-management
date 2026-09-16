@@ -5,7 +5,7 @@ import numpy as np
 PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
 
 # Загружаем ключи
-df = pd.read_excel(os.path.join(PROCESSED, '_Ключи_v2.xlsx'))
+df = pd.read_excel(os.path.join(PROCESSED, '_Ключи_v3.xlsx'))
 df['Код'] = df['Код'].astype(str).str.zfill(8)
 
 # Загружаем вспомогательные
@@ -23,7 +23,7 @@ df_rashod['Код'] = df_rashod['Код'].astype(str).str.zfill(8)
 df_vp = pd.read_excel(os.path.join(PROCESSED, 'ВПути_плоский.xlsx'))
 df_vp['Код'] = df_vp['Код'].astype(str).str.zfill(8)
 
-df_rez = pd.read_excel(os.path.join(PROCESSED, 'Резервы_плоский.xlsx'))
+df_rez = pd.read_excel(os.path.join(PROCESSED, 'Резервы_плоский_испр.xlsx'))
 df_rez['Код'] = df_rez['Код'].astype(str).str.zfill(8)
 
 df_mes = pd.read_excel(os.path.join(PROCESSED, 'Оборотка_месяц_плоский.xlsx'))

@@ -1,0 +1,13 @@
+import pandas as pd
+import os
+
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+# Смотрим в каждом отчёте
+for f in ['Остатки_плоский.xlsx', 'Оборотка_год_плоский.xlsx', 'Оборотка_месяц_плоский.xlsx']:
+    df = pd.read_excel(os.path.join(PROCESSED, f))
+    print(f'\n=== {f} ===')
+    sto_list = sorted(df['СТО'].unique())
+    print(f'СТО: {len(sto_list)}')
+    for s in sto_list:
+        print(f'  {s}')

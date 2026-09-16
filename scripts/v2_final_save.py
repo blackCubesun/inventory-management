@@ -13,7 +13,7 @@ df_pereras = pd.read_excel(os.path.join(PROCESSED, 'Перераспределе
 df_pereras['Код'] = df_pereras['Код'].astype(str).str.zfill(8)
 
 # Загружаем ключи
-df_keys = pd.read_excel(os.path.join(PROCESSED, '_Ключи_v2.xlsx'))
+df_keys = pd.read_excel(os.path.join(PROCESSED, '_Ключи_v3.xlsx'))
 df_keys['Код'] = df_keys['Код'].astype(str).str.zfill(8)
 
 # Параметры

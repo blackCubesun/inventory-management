@@ -1,0 +1,18 @@
+import pandas as pd
+import os
+
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+df = pd.read_excel(os.path.join(PROCESSED, '_Ключи_v2.xlsx'))
+df['Код'] = df['Код'].astype(str).str.zfill(8)
+
+print(f'Всего строк: {len(df)}')
+print(f'Уникальных пар СТО+Код: {len(df.drop_duplicates(subset=["СТО", "Код"]))}')
+print(f'Уникальных СТО: {df["СТО"].nunique()}')
+print(f'Уникальных Кодов: {df["Код"].nunique()}')
+
+# Дубли
+dups = df[df.duplicated(subset=['СТО', 'Код'], keep=False)]
+print(f'\nДублей: {len(dups)}')
+if len(dups) > 0:
+    print(dups.sort_values(['СТО', 'Код']).head(20))
