@@ -3,29 +3,38 @@ import os
 
 PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
 
-# Загружаем финальный Расчёт v2
-df_model = pd.read_excel(os.path.join(PROCESSED, '_Расчёт_v2_final.xlsx'))
-df_model['Артикул'] = df_model['Артикул'].astype(str)
+# Загружаем Расчёт
+df = pd.read_excel(os.path.join(PROCESSED, '_Расчёт_v2_final.xlsx'))
+df['Артикул'] = df['Артикул'].astype(str).str.strip()
+df['Код'] = df['Код'].astype(str).str.zfill(8)
 
 # Загружаем иерархию
 df_ier = pd.read_excel(os.path.join(PROCESSED, 'Иерархия_товаров_укрупнённая.xlsx'))
-df_ier['Артикул'] = df_ier['Артикул'].astype(str)
+df_ier['Артикул'] = df_ier['Артикул'].astype(str).str.strip()
 
-# Соединяем
-df_model = df_model.merge(
-    df_ier[['Артикул', 'ГруппаТовара']],
+print(f'Расчёт: {len(df)}')
+print(f'Иерархия: {len(df_ier)}')
+
+# Соединяем по Артикулу
+df = df.merge(
+    df_ier[['Артикул', 'Родитель', 'ГруппаТовара']],
     on='Артикул',
     how='left'
 )
 
-# Заполняем пропуски
-df_model['ГруппаТовара'] = df_model['ГруппаТовара'].fillna('Не определено')
+# Проверяем, сколько не соединилось
+neopred = df['ГруппаТовара'].isna().sum()
+print(f'\nНе соединилось: {neopred} из {len(df)} ({neopred/len(df)*100:.1f}%)')
 
-print('Группы в модели:')
-print(df_model['ГруппаТовара'].value_counts())
+# Заполняем пропуски
+df['ГруппаТовара'] = df['ГруппаТовара'].fillna('Без группы')
+df['Родитель'] = df['Родитель'].fillna('Без группы')
+
+print('\nГруппы в Модели_v2:')
+print(df['ГруппаТовара'].value_counts())
 
 print('\nПо группам и зонам:')
-print(df_model.groupby(['ГруппаТовара', 'Зона']).size().unstack(fill_value=0))
+print(df.groupby(['ГруппаТовара', 'Зона']).size().unstack(fill_value=0))
 
-df_model.to_excel(os.path.join(PROCESSED, '_Расчёт_v2_gruppy.xlsx'), index=False)
+df.to_excel(os.path.join(PROCESSED, '_Расчёт_v2_gruppy.xlsx'), index=False)
 print('\nСохранено: _Расчёт_v2_gruppy.xlsx')
