@@ -1,0 +1,21 @@
+import sqlite3
+import pandas as pd
+
+DB_PATH = r'C:\Users\92585\Desktop\Sklad_System\data\sklad.db'
+conn = sqlite3.connect(DB_PATH)
+
+# Список таблиц
+tables = pd.read_sql("SELECT name FROM sqlite_master WHERE type='table';", conn)
+print('Таблицы в базе:')
+print(tables)
+
+# Сколько строк в Модель_v2
+cnt = pd.read_sql("SELECT COUNT(*) as cnt FROM Модель_v2;", conn)
+print(f'\nСтрок в Модель_v2: {cnt["cnt"].iloc[0]}')
+
+# Проверка зон в Модель_v2
+zones = pd.read_sql("SELECT Зона, COUNT(*) as cnt FROM Модель_v2 GROUP BY Зона;", conn)
+print('\nЗоны в Модель_v2:')
+print(zones)
+
+conn.close()

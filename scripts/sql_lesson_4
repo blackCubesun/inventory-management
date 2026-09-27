@@ -1,0 +1,41 @@
+import sqlite3
+import pandas as pd
+
+DB_PATH = r'C:\Users\92585\Desktop\Sklad_System\data\sklad.db'
+conn = sqlite3.connect(DB_PATH)
+
+# ЗАДАНИЕ 1: Сколько позиций по каждой зоне
+query1 = """
+SELECT Зона, COUNT(*) as Позиции
+FROM Модель
+GROUP BY Зона
+ORDER BY Позиции DESC;
+"""
+
+# ЗАДАНИЕ 2: Сумма остатков по каждой СТО
+query2 = """
+SELECT СТО, SUM(ОстатокСТО) as ВсегоОстаток
+FROM Модель
+GROUP BY СТО
+ORDER BY ВсегоОстаток DESC
+LIMIT 10;
+"""
+
+# ЗАДАНИЕ 3: Средний расход по ABC_XYZ
+query3 = """
+SELECT ABC_XYZ, AVG(Расход12мес) as СреднийРасход
+FROM Модель
+GROUP BY ABC_XYZ
+ORDER BY СреднийРасход DESC
+LIMIT 25;
+"""
+
+for i, q in enumerate([query1, query2, query3], 1):
+    print(f'\n=== ЗАПРОС {i} ===')
+    try:
+        df = pd.read_sql(q, conn)
+        print(df)
+    except Exception as e:
+        print(f'Ошибка: {e}')
+
+conn.close()

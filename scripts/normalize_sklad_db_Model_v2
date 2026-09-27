@@ -1,0 +1,14 @@
+import sqlite3
+import pandas as pd
+import os
+
+DB_PATH = r'C:\Users\92585\Desktop\Sklad_System\data\sklad.db'
+PROCESSED = r'C:\Users\92585\Desktop\Sklad_System\data\processed'
+
+df = pd.read_excel(os.path.join(PROCESSED, 'Модель_v2.xlsx'), sheet_name='Расчёт')
+
+conn = sqlite3.connect(DB_PATH)
+df.to_sql('Модель_v2', conn, if_exists='replace', index=False)
+conn.close()
+
+print(f'Загружено: {len(df)} строк')

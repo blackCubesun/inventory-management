@@ -1,0 +1,32 @@
+import sqlite3
+import pandas as pd
+
+DB_PATH = r'C:\Users\92585\Desktop\Sklad_System\data\sklad.db'
+
+conn = sqlite3.connect(DB_PATH)
+
+# ЗАДАНИЕ 1: Соединить Модель и Остатки по Код+СТО
+query1 = """
+SELECT m.СТО, m.Код, m.Зона, o.Остаток
+FROM Модель m
+INNER JOIN Остатки o ON m.Код = o.Код AND m.СТО = o.СТО
+LIMIT 13;
+"""
+
+# ЗАДАНИЕ 2: LEFT JOIN все строки из модель
+query2 = """
+SELECT m.СТО, m.Код, o.Остаток
+FROM Модель m
+LEFT JOIN Остатки o ON m.Код = o.Код AND m.СТО = o.СТО
+LIMIT 50;
+"""
+
+for i, q in enumerate([query1, query2], 1):
+    print(f'=== ЗАПРОС {i} ===')
+    try:
+        df = pd.read_sql(q, conn)
+        print(df)
+    except Exception as e:
+        print(f'Ошибка: {e}')
+
+conn.close()

@@ -1,0 +1,11 @@
+import os
+
+DB_PATH = r'C:\Users\92585\Desktop\Sklad_System\data\sklad.db'
+print('Файл существует:', os.path.exists(DB_PATH))
+print('Папка data существует:', os.path.exists(r'C:\Users\92585\Desktop\Sklad_System\data'))
+
+# Что в папке data
+data_path = r'C:\Users\92585\Desktop\Sklad_System\data'
+if os.path.exists(data_path):
+    for f in os.listdir(data_path):
+        print(f'  {f}')
